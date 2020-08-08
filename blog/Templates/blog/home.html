@@ -1,0 +1,47 @@
+{% extends "blog/base.html" %}
+{% block content %}
+    {% for post in posts %}
+      <article class="media content-section">
+        <img class="rounded-circle article-img" src="{{ post.name.profile.image.url }}">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="{% url 'user-posts' post.name.username %}">{{ post.name }}</a>
+              <small class="text-muted">{{ post.date|date:"F  d, Y" }}</small>
+              <!-- format the date's appearance by specifyin the way it shud look give F- specifyin month , d- date, Y - year () -->
+            </div>
+                <h2> <a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
+
+           <small class="article-content">{{ post.content }}</small>
+      </div>
+    </article>
+    {% endfor %}
+
+    {% if is_paginated %}
+<!-- if its paginated then we can enter into the loop where we can check whether our given page object
+is havin any previous or not by checkin with page obj.has_previous -->
+      {% if page_obj.has_previous %}
+        <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        <!-- if it has previous pg then we can mention it as pg obj.previ pg no -->
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        <!-- for loopin  around through the pages we can mke use of the page_range
+      the paginator gives the page obj -->
+          {% if page_obj.number == num %}
+            <a class = "btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+          {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <a class = "btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+            <!-- if it has previous pg then we can mention it as pg obj.previ pg no -->
+        {% endif %}
+
+
+    {% endif %}
+
+{% endblock content %}
