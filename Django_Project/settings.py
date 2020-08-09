@@ -27,7 +27,7 @@ DEBUG = True
 
 # ALLOWED_HOSTS = [akblogapp.herokuapp.com]
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['akshblogapp.herokuapp.com']
 # Application definition
 
 INSTALLED_APPS = [
